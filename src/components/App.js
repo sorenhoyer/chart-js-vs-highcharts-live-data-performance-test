@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {observer} from "mobx-react";
 import './App.css';
-//import ChartContainer from './HighchartChart/ChartContainer';
 import ChartContainer from './ChartContainer';
 
 @observer
