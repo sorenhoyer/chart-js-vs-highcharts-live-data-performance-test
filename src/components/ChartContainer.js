@@ -1,8 +1,12 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import Chart from './Chart';
+import {Line} from 'react-chartjs-2';
 
-const ChartContainer = observer(({sensors, plotOptions}) => {
+const ChartContainer = observer(({sensors, initialState, options}) => {
+  if (sensors.get('sensor1') && sensors.get('sensor1').queue.data.length) {
+    initialState.datasets[0].data = sensors.get('sensor1').queue.data.slice();
+  }
+
   return (
     <div>
       <p>count: {sensors.get('sensor1') && sensors.get('sensor1').queue.data.length}</p>
@@ -10,16 +14,10 @@ const ChartContainer = observer(({sensors, plotOptions}) => {
         sensors && sensors.keys() && sensors.keys().filter(key=>key ==='sensor1').map(key =>
           <div key={key}>
             <p>min: {sensors.get('sensor1').minHeap.data[0]} | max: {sensors.get('sensor1').maxHeap.data[0]}</p>
-            <Chart
+            <Line
               key={key}
-              chartKey={key}
-              title={key}
-              subtitle=''
-              xAxisTitle='Time'
-              yAxisTitle='Level'
-              data={sensors.get('sensor1').queue.data.slice()}
-              overlayCharts={[]}
-              plotOptions={plotOptions}
+              data={initialState}
+              options={options}
             />
           </div>
         )
